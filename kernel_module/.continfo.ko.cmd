@@ -1,0 +1,1 @@
+cmd_/home/limon/proyecto2/kernel_module/continfo.ko := ld -r -m elf_x86_64 -z noexecstack --build-id=sha1  -T scripts/module.lds -o /home/limon/proyecto2/kernel_module/continfo.ko /home/limon/proyecto2/kernel_module/continfo.o /home/limon/proyecto2/kernel_module/continfo.mod.o;  true
