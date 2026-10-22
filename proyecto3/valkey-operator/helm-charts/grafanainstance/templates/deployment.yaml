@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "grafanainstance.fullname" . }}
+  labels:
+    app: {{ include "grafanainstance.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "grafanainstance.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "grafanainstance.name" . }}
+    spec:
+      containers:
+        - name: grafana
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GF_INSTALL_PLUGINS
+              value: "redis-datasource"
+            - name: GF_SECURITY_ADMIN_USER
+              value: "admin"
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: "admin"
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "true"
+            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+              value: "Admin"
+          volumeMounts:
+            - name: dashboard-provider
+              mountPath: /etc/grafana/provisioning/dashboards
+            - name: mi-dashboard
+              mountPath: /var/lib/grafana/dashboards
+            - name: datasource-config
+              mountPath: /etc/grafana/provisioning/datasources
+      volumes:
+        - name: dashboard-provider
+          configMap:
+            name: {{ include "grafanainstance.fullname" . }}-dashboard-provider
+        - name: mi-dashboard
+          configMap:
+            name: mi-dashboard-mumn
+        - name: datasource-config
+          configMap:
+            name: {{ include "grafanainstance.fullname" . }}-datasource

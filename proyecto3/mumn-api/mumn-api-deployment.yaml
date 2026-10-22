@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mumn-api
+  labels:
+    app: mumn-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mumn-api
+  template:
+    metadata:
+      labels:
+        app: mumn-api
+    spec:
+      containers:
+        - name: mumn-api
+          image: mumn-api:local
+          imagePullPolicy: Never   # Importante: no intentar descargar de internet
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GO_SERVICE_URL
+              value: "http://go-deployment-1:8081/war-report"
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mumn-api
+spec:
+  selector:
+    app: mumn-api
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

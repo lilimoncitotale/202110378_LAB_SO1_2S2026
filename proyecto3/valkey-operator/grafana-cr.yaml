@@ -1,0 +1,7 @@
+apiVersion: monitoring.mumn.com/v1
+kind: GrafanaInstance
+metadata:
+  name: mi-grafana
+  namespace: default
+spec:
+  replicaCount: 1

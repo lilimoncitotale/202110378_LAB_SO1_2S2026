@@ -1,0 +1,15 @@
+replicaCount: 1
+
+image:
+  repository: valkey/valkey
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 6379
+
+persistence:
+  enabled: true
+  size: 1Gi
+  accessMode: ReadWriteOnce

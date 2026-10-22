@@ -1,0 +1,7 @@
+apiVersion: cache.mumn.com/v1
+kind: ValkeyInstance
+metadata:
+  name: mi-valkey
+  namespace: default
+spec:
+  replicaCount: 1

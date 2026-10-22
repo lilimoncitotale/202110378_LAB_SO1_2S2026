@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-deployment-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-deployment-2
+  template:
+    metadata:
+      labels:
+        app: go-deployment-2
+    spec:
+      containers:
+        # Contenedor 1: gRPC Server
+        - name: grpc-server
+          image: go-grpc-server:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 50051
+          env:
+            - name: RABBITMQ_URL
+              value: "amqp://admin:admin123@rabbitmq:5672/"
+
+        # Contenedor 2: RabbitMQ Writer
+        - name: rabbitmq-writer
+          image: go-rabbitmq-writer:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8083
+          env:
+            - name: RABBITMQ_URL
+              value: "amqp://admin:admin123@rabbitmq:5672/"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-grpc-server
+spec:
+  selector:
+    app: go-deployment-2
+  ports:
+    - protocol: TCP
+      port: 50051
+      targetPort: 50051
+  type: ClusterIP

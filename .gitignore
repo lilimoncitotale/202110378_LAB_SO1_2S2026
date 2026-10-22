@@ -1,0 +1,6 @@
+*.tar
+*.tar.gz
+*.zip
+proyecto3/**/target/
+proyecto3/**/venv/
+proyecto3/**/__pycache__/
