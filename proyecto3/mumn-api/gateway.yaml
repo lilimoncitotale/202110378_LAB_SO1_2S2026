@@ -20,7 +20,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /report
+            value: /grpc-202110378
       backendRefs:
         - name: mumn-api
           port: 8080

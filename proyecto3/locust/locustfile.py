@@ -23,9 +23,9 @@ class MilitaryReporter(HttpUser):
 
         }
 
-        #esto se lo mandamos al endpoint /report
+        #esto se lo mandamos al endpoint /grpc-202110378
         with self.client.post(
-            "/report",
+            "/grpc-202110378",
             json=report,
             catch_response=True
         ) as response:

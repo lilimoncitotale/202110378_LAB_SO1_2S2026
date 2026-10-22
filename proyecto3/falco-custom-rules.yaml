@@ -1,0 +1,10 @@
+customRules:
+  custom-rules.yaml: |-
+    - rule: Leer archivo sensible en contenedor
+      desc: Detecta la lectura de /app/secretos dentro de un contenedor
+      condition: >
+        open_read and container and fd.name startswith /app/secretos
+      output: >
+        ALERTA PERSONALIZADA: Archivo /app/secretos leído (user=%user.name command=%proc.cmdline file=%fd.name container=%container.name image=%container.image.repository)
+      priority: WARNING
+      tags: [container, filesystem]

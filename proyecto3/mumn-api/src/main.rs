@@ -58,7 +58,7 @@ async fn main() {
 
     // Definir rutas
     let app = Router::new()
-        .route("/report", post(receive_report));
+        .route("/grpc-202110378", post(receive_report));
 
     // Escuchar en el puerto 8080
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
